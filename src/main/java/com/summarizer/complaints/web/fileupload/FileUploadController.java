@@ -1,15 +1,22 @@
 package com.summarizer.complaints.web.fileupload;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.summarizer.complaints.domain.fileupload.StorageService;
+import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class FileUploadController {
 
-    @PostMapping(value = "/file/voice")
-    public String voiceUpload(){
-        return "POST TEST";
+    private final StorageService storageService;
+
+    @PostMapping(value = "/files/voice")
+    public String voiceUpload(@RequestParam("voice-file") MultipartFile file){
+        return storageService.store(file);
     }
 }
