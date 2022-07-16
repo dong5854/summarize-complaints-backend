@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -18,5 +19,10 @@ public class FileUploadController {
     @PostMapping(value = "/files/voice")
     public String voiceUpload(@RequestParam("voice-file") MultipartFile file){
         return storageService.store(file);
+    }
+
+    @GetMapping(value = "/complaint-summery/list")
+    public String SearchSummery(@RequestParam("username") String username) throws IOException {
+        return storageService.loadByUserName(username);
     }
 }
