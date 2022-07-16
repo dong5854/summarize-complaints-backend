@@ -6,9 +6,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 public class StorageServiceImpl implements StorageService {
 
     private final StorageProperties storageProperties;
+    private final SummarizedRepository summarizedRepository;
 
     @Override
     public void init() {
@@ -51,6 +52,23 @@ public class StorageServiceImpl implements StorageService {
         System.out.println("파일 하나 로드 구현 미완성");
         return null;
     }
+
+    @Override
+    public String loadByUserName(String username) throws IOException {
+        SummarizedEntity data = summarizedRepository.findByUsername(username);
+        File file = new File(data.getFilepath() + "/" + data.getFilename()).getAbsoluteFile();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))){
+            StringBuffer content = new StringBuffer();
+            String tmp;
+            while((tmp = bufferedReader.readLine()) != null) {
+                content.append(tmp);
+                content.append("\n");
+            }
+            return content.toString();
+        }
+    }
+
 
     @Override
     public Resource loadAsResource(String filename) {
