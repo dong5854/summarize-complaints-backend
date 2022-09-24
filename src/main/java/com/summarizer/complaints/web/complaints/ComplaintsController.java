@@ -1,31 +1,40 @@
-package com.summarizer.complaints.web.fileupload;
+package com.summarizer.complaints.web.complaints;
 
-import com.summarizer.complaints.service.fileupload.StorageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.summarizer.complaints.domain.complaints.VoiceEntity;
+import com.summarizer.complaints.service.fileupload.VoiceService;
+import com.summarizer.complaints.web.complaints.dto.VoiceUploadRequestDTO;
+import com.summarizer.complaints.web.complaints.dto.VoiceUploadResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class FileUploadController {
+public class ComplaintsController {
+    private final VoiceService voiceService;
+    private ObjectMapper mapper = new ObjectMapper();
 
-    private final StorageService storageService;
+    @PostMapping(value = "/voice") // 음성 파일 업로드
+    public String voiceUpload(@ModelAttribute VoiceUploadRequestDTO voiceUploadRequestDTO) throws IOException {
+        VoiceEntity voiceEntity = voiceService.postVideo(voiceUploadRequestDTO);
 
-    @PostMapping(value = "/files/voice-file") // 음성 파일 업로드
-    public String voiceUpload(@RequestParam("voice-file") MultipartFile file){
-        return storageService.store(file);
+        VoiceUploadResponseDTO voiceUploadResponseDTO = new VoiceUploadResponseDTO(voiceEntity.getId(), voiceEntity.getTitle(), voiceEntity.getComplaintId());
+        return mapper.writeValueAsString(voiceUploadResponseDTO);
     }
 
-
-    @PostMapping(value = "/complaint-summery/list")  // 민원 요약본(텍스트) 조회
-    public String PostSummery(@RequestBody("username") String username) throws IOException {
-        return storageService.loadByUserName(username);
-    }
-
-    @GetMapping(value = "/complaint-summery/list")  // 민원 요약본(텍스트) 조회
-    public String GetSummery(@RequestParam("username") String username) throws IOException {
-        return storageService.loadByUserName(username);
+    @GetMapping(value = "/voice/{id}") // 음성 파일 다운로드
+    public ResponseEntity<Resource> voiceDownload(@PathVariable Long id){
+        VoiceEntity voiceEntity = voiceService.GetVideo(id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("audio/mpeg"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + voiceEntity.getTitle() + ".mp3")
+                .body(new ByteArrayResource(voiceEntity.getContent()));
     }
 }
