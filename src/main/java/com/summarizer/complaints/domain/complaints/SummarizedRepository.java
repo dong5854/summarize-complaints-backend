@@ -1,9 +1,7 @@
-package com.summarizer.complaints.domain.fileupload;
+package com.summarizer.complaints.domain.complaints;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface SummarizedRepository extends JpaRepository<SummarizedEntity, String> {
