@@ -6,12 +6,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SummarizedRepository extends JpaRepository<SummarizedEntity, String> {
-    SummarizedEntity findSummarizedEntityById(String id);
+public interface SummarizedRepository extends JpaRepository<SummarizedEntity, Long> {
+    SummarizedEntity findSummarizedEntityById(Long id);
     SummarizedEntity findSummarizedEntityByComplaintId(String complaintId);
     SummarizedEntity findSummarizedEntityByOriginalTextId(String originalTextId);
     SummarizedEntity findSummarizedEntityByOriginalVoiceId(String originalVoiceId);
-
     List<SummarizedEntity> findSummarizedEntitiesByUsername(String username);
 
 }
