@@ -1,11 +1,12 @@
 package com.summarizer.complaints.domain.complaints;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor @Getter
 @Entity @Table(name="summarizedFile")
 public class SummarizedEntity extends BaseTimeEntity {
     @Id
