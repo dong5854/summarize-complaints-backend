@@ -32,11 +32,8 @@ public class ComplaintsController {
     private ObjectMapper mapper = new ObjectMapper();
 
     @PostMapping(value = "/voice") // 음성 파일 업로드
-    public String voiceUpload(@ModelAttribute VoiceUploadRequestDTO voiceUploadRequestDTO) throws IOException {
-        VoiceEntity voiceEntity = voiceService.postVideo(voiceUploadRequestDTO);
-
-        VoiceUploadResponseDTO voiceUploadResponseDTO = new VoiceUploadResponseDTO(voiceEntity.getId(), voiceEntity.getTitle(), voiceEntity.getComplaintId());
-        return mapper.writeValueAsString(voiceUploadResponseDTO);
+    public VoiceUploadResponseDTO voiceUpload(@ModelAttribute VoiceUploadRequestDTO voiceUploadRequestDTO) throws IOException {
+        return voiceService.postVideo(voiceUploadRequestDTO);
     }
 
     @GetMapping(value = "/voice/{id}") // 음성 파일 다운로드
