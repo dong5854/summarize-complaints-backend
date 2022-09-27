@@ -49,18 +49,13 @@ public class ComplaintsController {
     }
 
     @PostMapping(value = "/summarized") //요약본 업로드
-    public String postSummarized(@RequestBody SummarizedPostRequestDTO summarizedPostRequestDTO) throws IOException {
-        SummarizedEntity summarizedEntity = summarizedService.postSummarized(summarizedPostRequestDTO);
-
-        SummarizedPostResponseDTO summarizedPostResponseDTO = new SummarizedPostResponseDTO(summarizedEntity.getId(), summarizedEntity.getTitle(), summarizedEntity.getUsername(), summarizedEntity.getComplaintId(), summarizedEntity.getOriginalTextId(), summarizedEntity.getOriginalVoiceId(), summarizedEntity.getKeywords());
-        return mapper.writeValueAsString(summarizedPostResponseDTO);
+    public SummarizedPostResponseDTO postSummarized(@RequestBody SummarizedPostRequestDTO summarizedPostRequestDTO) throws IOException {
+        return summarizedService.postSummarized(summarizedPostRequestDTO);
     }
 
     @GetMapping(value = "/summarized/{id}") // 요약본 다운로드
-    public String getSummarized(@PathVariable Long id) throws JsonProcessingException {
-        SummarizedEntity summarizedEntity = summarizedService.GetSummarized(id);
-        SummarizedGetResponseDTO summarizedGetResponseDTO = new SummarizedGetResponseDTO(summarizedEntity.getId(), summarizedEntity.getTitle(), summarizedEntity.getUsername(), summarizedEntity.getComplaintId(), summarizedEntity.getOriginalTextId(), summarizedEntity.getOriginalVoiceId(), summarizedEntity.getKeywords(), summarizedEntity.getContent());
-        return mapper.writeValueAsString(summarizedGetResponseDTO);
+    public SummarizedGetResponseDTO getSummarized(@PathVariable Long id) {
+        return summarizedService.GetSummarized(id);
     }
 
     @PostMapping(value= "/original") // 원본 파일 업로드
