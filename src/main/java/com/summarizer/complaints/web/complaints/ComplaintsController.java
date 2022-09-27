@@ -2,6 +2,7 @@ package com.summarizer.complaints.web.complaints;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.summarizer.complaints.domain.complaints.ComplaintEntity;
 import com.summarizer.complaints.domain.complaints.OriginalEntity;
 import com.summarizer.complaints.domain.complaints.SummarizedEntity;
 import com.summarizer.complaints.domain.complaints.VoiceEntity;
@@ -74,5 +75,19 @@ public class ComplaintsController {
         OriginalEntity originalEntity = originalService.getOriginal(id);
         OriginalGetResponseDTO originalGetResponseDTO = new OriginalGetResponseDTO(originalEntity.getId(), originalEntity.getComplaintId(), originalEntity.getOriginalVoiceId(), originalEntity.getTitle(), originalEntity.getContent());
         return mapper.writeValueAsString(originalGetResponseDTO);
+    }
+
+    @PostMapping(value = "/complaint") // 민원인 데이터 삽입
+    public String postComplaint(@RequestBody ComplaintPostRequestDTO complaintPostRequestDTO) throws JsonProcessingException {
+        ComplaintEntity complaintEntity = complaintService.postComplaintService(complaintPostRequestDTO);
+        ComplaintPostResponseDTO complaintPostResponseDTO = new ComplaintPostResponseDTO(complaintEntity.getId(), complaintEntity.getName(), complaintEntity.isBlackListed());
+        return mapper.writeValueAsString(complaintPostResponseDTO);
+    }
+
+    @GetMapping(value = "/complaint/{id}") // 민원인 데이터 조회
+    public String getComplaint(@PathVariable Long id) throws JsonProcessingException {
+        ComplaintEntity complaintEntity = complaintService.getComplaintService(id);
+        ComplaintGetResponseDTO complaintGetResponseDTO = new ComplaintGetResponseDTO(complaintEntity.getId(), complaintEntity.getName(), complaintEntity.isBlackListed());
+        return mapper.writeValueAsString(complaintGetResponseDTO);
     }
 }

@@ -1,10 +1,12 @@
 package com.summarizer.complaints.domain.complaints;
 
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor @Getter
 @Entity @Table(name="Complaint")
 public class ComplaintEntity extends BaseTimeEntity{
     @Id
@@ -15,5 +17,11 @@ public class ComplaintEntity extends BaseTimeEntity{
     private String name;
 
     @Column
-    boolean black_listed;
+    boolean blackListed;
+
+    @Builder
+    public ComplaintEntity(String name, boolean blackListed){
+        this.name = name;
+        this.blackListed = blackListed;
+    }
 }
