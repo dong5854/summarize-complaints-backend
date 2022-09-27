@@ -1,10 +1,12 @@
 package com.summarizer.complaints.domain.complaints;
 
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor @Getter
 @Entity @Table(name="OriginalFile")
 public class OriginalEntity extends BaseTimeEntity{
     @Id
@@ -22,4 +24,12 @@ public class OriginalEntity extends BaseTimeEntity{
 
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String content;
+
+    @Builder
+    public OriginalEntity(String complaintId, String originalVoiceId, String title, String content){
+        this.complaintId = complaintId;
+        this.originalVoiceId = originalVoiceId;
+        this.title = title;
+        this.content = content;
+    }
 }

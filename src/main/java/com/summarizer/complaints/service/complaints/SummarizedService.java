@@ -1,19 +1,16 @@
-package com.summarizer.complaints.service.fileupload;
+package com.summarizer.complaints.service.complaints;
 
 import com.summarizer.complaints.domain.complaints.SummarizedEntity;
 import com.summarizer.complaints.domain.complaints.SummarizedRepository;
-import com.summarizer.complaints.domain.complaints.VoiceEntity;
-import com.summarizer.complaints.domain.complaints.VoiceRepository;
 import com.summarizer.complaints.web.complaints.dto.SummarizedPostRequestDTO;
-import com.summarizer.complaints.web.complaints.dto.VoiceUploadRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class SummarizedService {
 
     private final SummarizedRepository summarizedRepository;

@@ -1,4 +1,4 @@
-package com.summarizer.complaints.service.fileupload;
+package com.summarizer.complaints.service.complaints;
 
 import com.summarizer.complaints.domain.complaints.VoiceEntity;
 import com.summarizer.complaints.domain.complaints.VoiceRepository;
@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class VoiceService {
 
     private final VoiceRepository voiceRepository;
