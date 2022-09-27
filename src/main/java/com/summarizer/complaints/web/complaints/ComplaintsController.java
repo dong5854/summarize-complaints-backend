@@ -59,17 +59,13 @@ public class ComplaintsController {
     }
 
     @PostMapping(value= "/original") // 원본 파일 업로드
-    public String postOriginal(@RequestBody OriginalPostRequestDTO originalPostRequestDTO) throws JsonProcessingException {
-        OriginalEntity originalEntity = originalService.postOriginal(originalPostRequestDTO);
-        OriginalPostResponseDTO originalPostResponseDTO = new OriginalPostResponseDTO(originalEntity.getId(), originalEntity.getComplaintId(), originalEntity.getOriginalVoiceId(), originalEntity.getTitle());
-        return mapper.writeValueAsString(originalPostResponseDTO);
+    public OriginalPostResponseDTO postOriginal(@RequestBody OriginalPostRequestDTO originalPostRequestDTO) throws JsonProcessingException {
+        return originalService.postOriginal(originalPostRequestDTO);
     }
 
     @GetMapping(value = "/original/{id}") // 원본 파일 다운로드
-    public String getOriginal(@PathVariable Long id) throws JsonProcessingException {
-        OriginalEntity originalEntity = originalService.getOriginal(id);
-        OriginalGetResponseDTO originalGetResponseDTO = new OriginalGetResponseDTO(originalEntity.getId(), originalEntity.getComplaintId(), originalEntity.getOriginalVoiceId(), originalEntity.getTitle(), originalEntity.getContent());
-        return mapper.writeValueAsString(originalGetResponseDTO);
+    public OriginalGetResponseDTO getOriginal(@PathVariable Long id) throws JsonProcessingException {
+        return originalService.getOriginal(id);
     }
 
     @PostMapping(value = "/complaint") // 민원인 데이터 삽입
