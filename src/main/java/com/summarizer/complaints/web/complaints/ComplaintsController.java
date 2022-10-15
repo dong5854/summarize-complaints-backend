@@ -48,7 +48,12 @@ public class ComplaintsController {
 
     @GetMapping(value = "/summarized/{id}") // 요약본 조회
     public SummarizedGetResponseDTO getSummarized(@PathVariable Long id) {
-        return summarizedService.GetSummarized(id);
+        return summarizedService.GetSummarizedByID(id);
+    }
+
+    @GetMapping(value = "/summarized-list/{name}") // 요약본 조회
+    public List<SummarizedGetResponseDTO> getSummarized(@PathVariable String name) {
+        return summarizedService.GetSummarizedListByComplaintName(name);
     }
 
     @PostMapping(value= "/original") // 원본 파일 업로드

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -31,8 +33,14 @@ public class SummarizedService {
         return new SummarizedPostResponseDTO(summarizedEntity.getId(), summarizedEntity.getTitle(), summarizedEntity.getUsername(), summarizedEntity.getComplaintId(), summarizedEntity.getOriginalTextId(), summarizedEntity.getOriginalVoiceId(), summarizedEntity.getKeywords());
     }
 
-    public SummarizedGetResponseDTO GetSummarized(Long id){
+    public SummarizedGetResponseDTO GetSummarizedByID(Long id){
         SummarizedEntity summarizedEntity = summarizedRepository.findSummarizedEntityById(id);
         return new SummarizedGetResponseDTO(summarizedEntity.getId(), summarizedEntity.getTitle(), summarizedEntity.getUsername(), summarizedEntity.getComplaintId(), summarizedEntity.getOriginalTextId(), summarizedEntity.getOriginalVoiceId(), summarizedEntity.getKeywords(), summarizedEntity.getContent());
+    }
+
+    public List<SummarizedGetResponseDTO> GetSummarizedListByComplaintName(String name){
+        return summarizedRepository.findSummarizedEntitiesByComplaintId(name).stream()
+                .map(c -> new SummarizedGetResponseDTO(c.getId(), c.getTitle(), c.getUsername(), c.getComplaintId(), c.getOriginalTextId(), c.getOriginalVoiceId(), c.getKeywords(), c.getContent()))
+                .collect(Collectors.toList());
     }
 }

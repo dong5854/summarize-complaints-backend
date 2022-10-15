@@ -9,6 +9,8 @@ import java.util.List;
 public interface SummarizedRepository extends JpaRepository<SummarizedEntity, Long> {
     SummarizedEntity findSummarizedEntityById(Long id);
     SummarizedEntity findSummarizedEntityByComplaintId(String complaintId);
+
+    List<SummarizedEntity> findSummarizedEntitiesByComplaintId(String complaintId);
     SummarizedEntity findSummarizedEntityByOriginalTextId(String originalTextId);
     SummarizedEntity findSummarizedEntityByOriginalVoiceId(String originalVoiceId);
     List<SummarizedEntity> findSummarizedEntitiesByUsername(String username);
