@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class ComplaintService {
@@ -17,15 +20,23 @@ public class ComplaintService {
 
     @Transactional
     public ComplaintPostResponseDTO postComplaintService(ComplaintPostRequestDTO complaintPostRequestDTO){
-            ComplaintEntity complaintEntity = ComplaintEntity.builder()
-                    .name(complaintPostRequestDTO.getName())
-                    .blackListed(complaintPostRequestDTO.isBlackListed())
-                    .build();
-        return new ComplaintPostResponseDTO(complaintEntity.getId(), complaintEntity.getName(), complaintEntity.isBlackListed());
+        ComplaintEntity complaintEntity = ComplaintEntity.builder()
+                .name(complaintPostRequestDTO.getName())
+                .blackListed(complaintPostRequestDTO.isBlackListed())
+                .build();
+        ComplaintEntity savedComplaintEntity = complaintRepository.save(complaintEntity);
+        return new ComplaintPostResponseDTO(savedComplaintEntity.getId(), savedComplaintEntity.getName(), savedComplaintEntity.isBlackListed());
     }
 
-    public ComplaintGetResponseDTO getComplaintService(Long id){
+    public ComplaintGetResponseDTO getComplaintByID(Long id){
             ComplaintEntity complaintEntity =  complaintRepository.findComplaintEntityById(id);
         return new ComplaintGetResponseDTO(complaintEntity.getId(), complaintEntity.getName(), complaintEntity.isBlackListed());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ComplaintGetResponseDTO> getComplaintsByName(String name){
+        return complaintRepository.findComplaintEntitiesByName(name).stream()
+                .map(c -> new ComplaintGetResponseDTO(c.getId(), c.getName(), c.isBlackListed()))
+                .collect(Collectors.toList());
     }
 }

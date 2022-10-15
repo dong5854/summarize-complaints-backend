@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class ComplaintsController {
         return summarizedService.postSummarized(summarizedPostRequestDTO);
     }
 
-    @GetMapping(value = "/summarized/{id}") // 요약본 다운로드
+    @GetMapping(value = "/summarized/{id}") // 요약본 조회
     public SummarizedGetResponseDTO getSummarized(@PathVariable Long id) {
         return summarizedService.GetSummarized(id);
     }
@@ -66,7 +67,12 @@ public class ComplaintsController {
     }
 
     @GetMapping(value = "/complaint/{id}") // 민원인 데이터 조회
-    public ComplaintGetResponseDTO getComplaint(@PathVariable Long id) {
-        return complaintService.getComplaintService(id);
+    public ComplaintGetResponseDTO getComplaintByID(@PathVariable Long id) {
+        return complaintService.getComplaintByID(id);
+    }
+
+    @GetMapping(value = "/complaint-list/{name}") // 민원인 이름으로 민원인 리스트 조회
+    public List<ComplaintGetResponseDTO> getComplaintsByName(@PathVariable String name) {
+        return complaintService.getComplaintsByName(name);
     }
 }
